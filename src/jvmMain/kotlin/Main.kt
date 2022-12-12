@@ -17,8 +17,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 
-val lowerCase = arrayOf("a", "b", "c", "d","e","f","g","h","ij","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z")
-val upperCase = arrayOf("A","B","C","D","E","F","G","H","IJ","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z")
+val lowerCase = arrayOf("a", "b", "c", "d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z")
+val upperCase = arrayOf("A","B","C","D","E","F","G","H","I", "J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z")
 
 @Composable
 @Preview
@@ -105,32 +105,20 @@ fun decipher(text: String, k: Int): String {
     var result = ""
     for(s in text) {
         if (s == ' ') result += " "
-        if (s == 'I' || s == 'J')
-            result += upperCase[(8 - k) % 25].toCharArray()[0]
-        if (s == 'i' || s == 'j')
-            result += lowerCase[(8 - k) % 25].toCharArray()[0]
         if (upperCase.contains(s.toString())) {
-            if ((upperCase.indexOf(s.toString()) - k) % 25 < 0) {
-                result += upperCase[upperCase.size - (-1) * (upperCase.indexOf(s.toString()) - k) % 25]
+            if ((upperCase.indexOf(s.toString()) - k) % 26 < 0) {
+                result += upperCase[upperCase.size - (-1) * (upperCase.indexOf(s.toString()) - k) % 26]
                 continue
             }
-            result += if (upperCase[(upperCase.indexOf(s.toString()) - k) % 25] != "IJ") {
-                upperCase[(upperCase.indexOf(s.toString()) - k) % 25]
-            } else {
-                "I"
-            }
+            result += upperCase[(upperCase.indexOf(s.toString()) - k) % 26]
         }
 
         if (lowerCase.contains(s.toString())) {
-            if ((lowerCase.indexOf(s.toString()) - k) % 25 < 0) {
+            if ((lowerCase.indexOf(s.toString()) - k) % 26 < 0) {
                 result += lowerCase[lowerCase.size - (-1) * (lowerCase.indexOf(s.toString()) - k) % 25]
                 continue
             }
-            result += if (lowerCase[(lowerCase.indexOf(s.toString()) - k) % 25] != "ij") {
-                lowerCase[(lowerCase.indexOf(s.toString()) - k) % 25]
-            } else {
-                "i"
-            }
+            result += lowerCase[(lowerCase.indexOf(s.toString()) - k) % 26]
         }
 
     }
@@ -141,23 +129,10 @@ fun encrypt(text: String, k: Int): String {
     var result = ""
     for (s in text) {
         if (s == ' ') result += " "
-        if (s == 'I' || s == 'J')
-            result += upperCase[(8 + k) % 25].toCharArray()[0]
-        if (s == 'i' || s == 'j')
-            result += lowerCase[(8 + k) % 25].toCharArray()[0]
         if (upperCase.contains(s.toString()))
-            result += if (upperCase[(upperCase.indexOf(s.toString()) + k) % 25] != "IJ") {
-                upperCase[(upperCase.indexOf(s.toString()) + k) % 25]
-            } else {
-                "I"
-            }
+            result += upperCase[(upperCase.indexOf(s.toString()) + k) % 26]
         if (lowerCase.contains(s.toString()))
-            result += if (lowerCase[(lowerCase.indexOf(s.toString()) + k) % 25] != "ij") {
-                lowerCase[(lowerCase.indexOf(s.toString()) + k) % 25]
-            } else {
-                "i"
-            }
-
+            result += lowerCase[(lowerCase.indexOf(s.toString()) + k) % 26]
     }
     return result
 }
